@@ -1,0 +1,86 @@
+{
+  "azerbaijan": {
+    "country": ["азербайджан", "azerbaijan"],
+    "capital": ["баку", "baku"]
+  },
+  "argentina" : {
+    "country": ["аргентина", "argentina"],
+    "capital": ["буэнос-айрес", "буэнос айрес", "buenos Aires"]
+  },
+  "australia": {
+    "country": ["австралия", "australia"],
+    "capital": ["канберра", "canberra"]
+  },
+  "austria": {
+    "country": ["австрия", "austria"],
+    "capital": ["вена", "vienna"]
+  },
+  "belarus": {
+    "country": ["беларусь", "belarus"],
+    "capital": ["минск", "minsk"]
+  },
+  "belgium": {
+    "country": ["бельгия", "belgium"],
+    "capital": ["брюссель", "brussels"]
+  },
+  "brazil": {
+    "country": ["бразилия", "brazil"],
+    "capital": ["бразилиа", "brazilia"]
+  },
+  "bulgaria": {
+    "country": ["болгария", "bulgaria"],
+    "capital": ["софия", "sofia"]
+  },
+  "canada": {
+    "country": ["канада", "canada"],
+    "capital": ["оттава", "ottawa"]
+  },
+  "china": {
+    "country": ["китай", "china"],
+    "capital": ["пекин", "beijing"]
+  },
+  "denmark": {
+    "country": ["дания", "denmark"],
+    "capital": ["копенгаген", "copenhagen"]
+  },
+  "germany": {
+    "country": ["германия", "germany"],
+    "capital": ["берлин", "berlin"]
+  },
+  "great britain": {
+    "country": ["великобритания", "great britain"],
+    "capital": ["лондон", "london"]
+  },
+  "hungary": {
+    "country": ["венгрия", "hungary"],
+    "capital": ["будапешт", "budapest"]
+  },
+  "italy": {
+    "country": ["италия", "italy"],
+    "capital": ["рим", "rome"]
+  },
+  "netherlands": {
+    "country": ["нидерланды", "голландия", "netherlands"],
+    "capital": ["амстердам", "amsterdam"]
+  },
+  "norway": {
+    "country": ["норвегия", "norway"],
+    "capital": ["осло", "oslo"]
+  },
+  "spain": {
+    "country": ["испания", "spain"],
+    "capital": ["мадрид", "madrid"]
+  },
+  "venezuela": {
+    "country": ["венесуэла", "venezuela"],
+    "capital": ["каракас", "caracas"]
+  },
+  "vietnam": {
+    "country": ["вьетнам", "vietnam"],
+    "capital": ["ханой", "hanoi"]
+  },
+  "ukraine": {
+    "country": ["украина", "ukraine"],
+    "capital": ["киев", "kyiv", "kiev"]
+  }
+}

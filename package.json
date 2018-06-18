@@ -1,0 +1,48 @@
+{
+    "name": "final-game",
+    "version": "1.0.0",
+    "description": "RSS stage #2 final task",
+    "homepage": "http://rini.surge.sh",
+    "main": "index.js",
+    "scripts": {
+        "build": "webpack -p --mode production",
+        "dev-server": "webpack-dev-server --mode development"
+    },
+    "author": "Anton Koniouchevsky",
+    "license": "ISC",
+    "dependencies": {
+        "firebase": "^5.0.4",
+        "font-awesome": "^4.7.0",
+        "normalize.css": "^8.0.0",
+        "react": "^16.4.0",
+        "react-dom": "^16.4.0",
+        "react-modal": "^3.4.5",
+        "react-redux": "^5.0.7",
+        "react-router-dom": "^4.2.2",
+        "react-slick": "^0.23.1",
+        "react-sortable-hoc": "^0.8.3",
+        "redux": "^4.0.0",
+        "slick-carousel": "^1.8.1",
+        "uuid": "^3.2.1"
+    },
+    "devDependencies": {
+        "postcss-loader": "^1.0.0",
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "clean-webpack-plugin": "^0.1.19",
+        "css-loader": "^0.28.11",
+        "file-loader": "^1.1.11",
+        "html-webpack-plugin": "^3.2.0",
+        "node-sass": "^4.9.0",
+        "sass-loader": "^7.0.1",
+        "style-loader": "^0.21.0",
+        "webpack": "^4.10.2",
+        "webpack-cli": "^2.1.4",
+        "webpack-dev-server": "^3.1.4"
+    }
+}

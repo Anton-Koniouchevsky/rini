@@ -1,0 +1,10 @@
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: $primary-font, sans-serif;
+  background-image: url("../images/background-pattern.png");
+  user-select: none;
+  font-size: $l-size;
+}

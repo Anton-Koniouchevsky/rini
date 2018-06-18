@@ -1,0 +1,10 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  
+  background: $primary-color;
+  &__link {
+    text-decoration: none;
+    padding: 20px;
+  }
+}

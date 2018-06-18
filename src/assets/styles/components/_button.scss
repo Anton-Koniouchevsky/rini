@@ -1,0 +1,51 @@
+.button {
+  display: block;
+  width: $xxl-size * 5;
+  height: $xl-size;
+  margin: $l-size;
+  border: 2px solid $black-color;
+  border-radius: 5px;
+  line-height: $xl-size;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  &--success {
+    border: 2px solid $success-color;
+    color: $white-color;
+    background: $success-color;
+    &:hover {
+      background: lighten($success-color, 10%);
+    }
+    &:active {
+      background: darken($success-color, 10%);
+    }
+  }
+  &--primary {
+    margin: $s-size;
+    border: 2px solid $primary-color;
+    color: $white-color;
+    background: $primary-color;
+    &:hover {
+      background: lighten($primary-color, 10%);
+    }
+    &:active {
+      background: darken($primary-color, 10%);
+    }
+  }
+  &--round {
+    outline: none;
+    border-radius: 50%;
+  }
+  &--white {
+    border: 2px solid white;
+    color: $white-color;
+    &:hover {
+      background: $white-color;
+      color: lighten($black-color, 20%);
+    }
+    &:active {
+      background: darken($white-color, 10%);
+      color: $primary-color;
+    }
+  }
+}

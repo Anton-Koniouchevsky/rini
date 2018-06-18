@@ -1,0 +1,48 @@
+.custom-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  border-radius: 15px;
+  background: darken($white-color, 30%);
+  outline: none;
+  &__header {
+    font-family: $header-font, sans-serif;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .fa-volume-up {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  &__input {
+    box-sizing: border-box;
+    width: 250px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    border: 1px solid lighten(black, 60%);
+  }
+  &__row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.SortableHelper {
+  padding: 15px;
+  margin:0;
+}
+
+.horizontalItem {
+  padding: 15px;
+  margin:0;
+  cursor: pointer;
+}

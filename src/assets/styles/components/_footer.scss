@@ -1,0 +1,30 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 150px;
+  color: darken($white-color, 20%);
+  background: lighten($black-color, 20%);
+  &__info {
+    display: flex;
+  }
+  &__author {
+    font-family: $primary-font, sans-serif;
+    font-size: $s-size;
+    color: $white-color;
+  }
+  &__link {
+    text-decoration: none;
+    padding: 20px;
+  }
+  &__social {
+    display: flex;  
+    .fa {
+      margin: 20px;
+      text-decoration: none;
+      &:visited {
+        color: $white-color;
+      }
+    }
+  }
+}
