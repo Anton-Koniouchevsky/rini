@@ -5,10 +5,10 @@ Modal.setAppElement('#app');
 
 const SpellChoiceModal = (props) => { 
   const handleClick = (event) => {
-    props.setSpellType(event.target.value || event.target.parentNode.value);
+    props.setSpellType(event.target.dataset.type || event.target.parentNode.dataset.type);
   }
 
-  const handleClose = (event) => {
+  const handleClose = () => {
     props.closeSpellChoiceModal();
   }
 
@@ -20,19 +20,19 @@ const SpellChoiceModal = (props) => {
       className="spell-modal" 
     >
       <div className="circle">
-        <button className="spell-button fireAttack" value="fireAttack" onClick={handleClick}>
+        <button className="spell-button fireAttack" data-type="fireAttack" onClick={handleClick}>
           <i className="fa fa-2x fa-fire"></i>
           <span>Огонь</span>
         </button>
-        <button className="spell-button iceAttack" value="iceAttack" onClick={handleClick}>
+        <button className="spell-button iceAttack" data-type="iceAttack" onClick={handleClick}>
           <i className="fa fa-2x fa-snowflake-o"></i>
           <span>Лёд</span>
         </button>
-        <button className="spell-button psyAttack" value="psyAttack" onClick={handleClick}>
+        <button className="spell-button psyAttack" data-type="psyAttack" onClick={handleClick}>
           <i className="fa fa-2x fa-bolt"></i>
           <span>Молния</span>
         </button>
-        <button className="spell-button hill" value="hill" onClick={handleClick}>
+        <button className="spell-button hill" data-type="hill" onClick={handleClick}>
           <i className="fa fa-2x fa-heartbeat"></i>
           <span>Лечение</span>
         </button>

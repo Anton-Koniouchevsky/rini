@@ -7,29 +7,22 @@ import { fbSignUp, fbLogIn } from '../store/firebase/auth';
 import { setUser } from "../store/firebase/database";
 import { mapCurrentUserToProps } from '../store/configureStore';
 
-
-
 const SignUpPage = (props) => {
 
   const submitForm = async ({ name, email, password, hero, sound, effects }) => {
-    console.log({ name, email, password, hero }); 
     const signUpResult = await fbSignUp(email, password);
     if (signUpResult.error) return signUpResult;
-    console.log('signUp');    
     const logInResult = await fbLogIn(email, password);
     if (logInResult.error) return logInResult;
-    console.log('logIn');
     const id = logInResult.user.uid;
-    console.log(id);
     props.dispatch(logIn({
       id,
       name,
-      email,
       hero,
       sound,
       effects,
     }));
-    setUser({ id, name, email, hero, sound, effects });
+    setUser({ id, name, hero, sound, effects });
     return { error: '' };
   }
 

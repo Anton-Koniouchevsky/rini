@@ -1,21 +1,18 @@
 import React from 'react';
 import DnDContainer from '../DnDContainer';
-import { shuffle, generateNumber } from '../../utils/randomFunctions';
 import { arrayMove } from 'react-sortable-hoc';
+import { shuffle, generateNumber } from '../../utils/randomFunctions';
 
 class SequenceTask extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const sequence = Array.from({ length: 5 }, () => generateNumber(1, 150));    
     this.state.sequence = sequence;
     this.state.shuffledNumbers = shuffle(sequence);
+    props.setCorrectAnswer([Array.from(sequence).sort((a, b) => a - b).join('')]);
   }
 
   state = {};
-
-  handleClick = () => {
-    this.props.setTaskResult(this.state.shuffledNumbers.every((number, index, array) =>  index === array.length - 1 || number <= array[index + 1]));
-  }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
@@ -24,6 +21,7 @@ class SequenceTask extends React.Component {
   };
 
   render = () => {
+    this.props.setValue(this.state.shuffledNumbers.join(''));
     return (
       <div className="custom-modal">
         <h3 className="custom-modal__header">Упорядочи числа по возрастанию</h3>
@@ -35,7 +33,6 @@ class SequenceTask extends React.Component {
             helperClass="SortableHelper"
           />
         </div>
-        <button onClick={this.handleClick} className="button button--success">Проверить</button>
       </div>
     );
   }

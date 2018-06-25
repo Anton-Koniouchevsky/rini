@@ -1,59 +1,44 @@
-import {backgrounds, heroes, enemies, spells} from '../config';
+import {backgrounds, heroes, enemies, spells} from '../configs/config';
 
 const images = require.context('../../assets/images/sprites', true);
 const imagePath = (name) => images(name, true);
 
 export default class ImageLoader {
-  constructor(gameField) {
-    this.gameField = gameField;
-    this.backgroundImages = {};
-    this.heroImages = {};
-    this.enemyImages = {};
-    this.spellImages = {};
+  constructor(currentHero) {
+    this.backgrounds = {};
+    this.heroes = {};
+    this.enemies = {};
+    this.spells = {};
     this.promiseArray = [];
     backgrounds.forEach((backgroundName) => {
-      this.promiseArray.push(this.loadImage(
-        this.backgroundImages, 
-        backgroundName, 
-        imagePath(`./backgrounds/background-${backgroundName}.jpg`)
-      ));
-    });
-    heroes.forEach((heroName) => {
-      this.promiseArray.push(this.loadImage(
-        this.heroImages, 
-        heroName, 
-        imagePath(`./heroes/${heroName}.png`)
-      ));
+      this.loadImage('backgrounds', backgroundName);
     });
     enemies.forEach((enemyName) => {
-      this.promiseArray.push(this.loadImage(
-        this.enemyImages, 
-        enemyName, 
-        imagePath(`./enemies/${enemyName}.png`)
-      ));
+      this.loadImage('enemies', enemyName);
     });
     spells.forEach((spellName) => {
-      this.promiseArray.push(this.loadImage(
-        this.spellImages, 
-        spellName, 
-        imagePath(`./spells/${spellName}.png`)
-      ));
+      this.loadImage('spells', spellName);
     });
+    this.loadImage('heroes', currentHero);
   }
 
-  loadImage(destination, imageName, imageUrl) {
-    return new Promise((resolve, reject) => {
-      let img = new Image();
-      img.onload = () => {
-        destination[imageName] = img;
-        resolve();
-      };
-      img.src = imageUrl;
-    });
+  loadImage(destination, imageName) {
+    this.promiseArray.push(
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          this[destination][imageName] = img;
+          resolve();
+        };
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = imagePath(`./${destination}/${imageName}.png`);
+    }));
   }
 
   load = () => {
     return Promise.all(this.promiseArray)
-      .then(resolve => [this.backgroundImages, this.heroImages, this.enemyImages, this.spellImages]);
+      .then(() => [this.backgrounds, this.heroes, this.enemies, this.spells])
+      .catch((error) => ({error}));
   }
+
 }

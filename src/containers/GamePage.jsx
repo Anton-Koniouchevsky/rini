@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import Game from '../components/Game';
+import GameBlock from '../components/GameBlock';
+import PreGameBlock from '../components/PreGameBlock';
 import { mapCurrentUserToProps } from '../store/configureStore';
 import { getActiveSession, setResult } from '../store/firebase/database';
 import { getName } from '../utils/nameGenerator';
@@ -54,22 +55,17 @@ class GamePage extends React.Component {
   render() {
     if (this.state.promiseIsSettled) {
       return (
-        <div className="row-container row-container--top">
-          <h2 className="row-container__header">Играть</h2>
-          {this.state.activeSession.enemyName &&
-            <div>
-              <div>Сохраненная игра</div>
-              <div>Монстров пройдено: {this.state.activeSession.level}.</div>
-              <button onClick={this.continueGame} className="button button--primary">Продолжить</button>
-            </div>
-          }
-          <button onClick={this.startNewGame} className="button button--success">Начать новую игру</button>
-        </div>
+        <PreGameBlock 
+          isUnfinished={this.state.activeSession.enemyName}
+          level={this.state.activeSession.level}
+          continueGame={this.continueGame}
+          startNewGame={this.startNewGame}
+        />
       );
     }
     if (this.state.gameIsStarted) {
       return (
-        <Game
+        <GameBlock
           activeSession={this.state.activeSession}
         />
       );

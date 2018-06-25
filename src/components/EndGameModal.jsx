@@ -10,7 +10,7 @@ const EndGameModal = (props) => {
     if (!event.target.value) {
       props.restart();
     } else {
-      props.history.push(event.target.value);
+      props.history.push(event.target.dataset.destination);
     }
   }
 
@@ -23,9 +23,9 @@ const EndGameModal = (props) => {
       <h3 className="custom-modal__header">Поражение!</h3>
       <div>Уровней пройдено: {props.level}</div>
       <div>
-        <button value="" onClick={handleClick} className="button button--primary">Начать заново</button>
-        <button value="/users" onClick={handleClick} className="button button--primary">Рекорды</button>
-        <button value="/" onClick={handleClick} className="button button--primary">На главную</button>
+        <button data-destination="" onClick={handleClick} className="button button--primary">Начать заново</button>
+        <button data-destination="/users" onClick={handleClick} className="button button--primary">Рекорды</button>
+        <button data-destination="/" onClick={handleClick} className="button button--primary">На главную</button>
       </div>
     </Modal>
   );

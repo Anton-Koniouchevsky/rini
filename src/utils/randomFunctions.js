@@ -29,7 +29,7 @@ const generateArithmeticOperation = () => {
 //Fisher-Yates Shuffle
 const shuffle = (array) => {
   const length = array.length;
-  for (let i = length - 1; i > 0; i--) {
+  for (let i = length - 1; i > 1; i--) {
     let j = getRandomIndex(i + 1);
     [array[i], array[j]] = [array[j], array[i]];
   }

@@ -1,22 +1,18 @@
 import React from 'react';
 import DnDContainer from '../DnDContainer';
-import { shuffleWord, getRandomArrayItem } from '../../utils/randomFunctions';
 import { arrayMove } from 'react-sortable-hoc';
+import { shuffleWord, getRandomArrayItem } from '../../utils/randomFunctions';
 import * as words from '../../assets/tasks/scrambleWords.json';
 
 class ScrambleTask extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const word = getRandomArrayItem(words.default);    
-    this.state.word = word;
     this.state.shuffledWord = shuffleWord(word);
+    props.setCorrectAnswer([word]);
   }
 
   state = {};
-
-  handleClick = () => {
-    this.props.setTaskResult(this.state.shuffledWord.join('') === this.state.word);
-  }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
@@ -25,6 +21,7 @@ class ScrambleTask extends React.Component {
   };
 
   render = () => {
+    this.props.setValue(this.state.shuffledWord.join(''));
     return (
       <div className="custom-modal">
         <h3 className="custom-modal__header">Собери слово</h3>
@@ -36,7 +33,6 @@ class ScrambleTask extends React.Component {
             helperClass="SortableHelper"
           />
         </div>
-        <button onClick={this.handleClick} className="button button--success">Проверить</button>
       </div>
     );
   }

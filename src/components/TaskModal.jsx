@@ -1,42 +1,92 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { getRandomArrayItem } from '../utils/randomFunctions';
 import ArithmeticTask from './tasks/ArithmeticTask';
 import ScrambleTask from './tasks/ScrambleTask';
 import SpeechSynthesisTask from './tasks/SpeechSynthesisTask';
 import VocabularyTask from './tasks/VocabularyTask';
-import * as vocabulary from '../assets/tasks/vocabulary.json';
-import * as countries from '../assets/tasks/countries.json';
 import CountryByFlagTask from './tasks/CountryByFlagTask';
 import CapitalsTask from './tasks/CapitalsTask';
 import SequenceTask from './tasks/SequenceTask';
 import GreaterNumberTask from './tasks/GreaterNumberTask';
 import MissedNumberTask from './tasks/MissedNumberTask';
+import { getRandomIndex } from '../utils/randomFunctions';
 
 Modal.setAppElement('#app');
 
-const TaskModal = (props) => {
-  const tasks = [
-    <ArithmeticTask setTaskResult={props.setTaskResult} />,
-    <ScrambleTask setTaskResult={props.setTaskResult} />,
-    <SpeechSynthesisTask setTaskResult={props.setTaskResult} />,
-    <VocabularyTask setTaskResult={props.setTaskResult} vocabulary={vocabulary} />,
-    <CountryByFlagTask setTaskResult={props.setTaskResult} countries={countries} />,
-    <CapitalsTask setTaskResult={props.setTaskResult} countries={countries} />,
-    <GreaterNumberTask setTaskResult={props.setTaskResult} />,
-    <MissedNumberTask setTaskResult={props.setTaskResult} />,
-    <SequenceTask setTaskResult={props.setTaskResult} />,
-  ];
+class TaskModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.tasks = [
+      <ArithmeticTask setCorrectAnswer={this.setCorrectAnswer} />, 
+      <SpeechSynthesisTask setCorrectAnswer={this.setCorrectAnswer} />,
+      <VocabularyTask setCorrectAnswer={this.setCorrectAnswer} />,
+      <CountryByFlagTask setCorrectAnswer={this.setCorrectAnswer} />,
+      <CapitalsTask setCorrectAnswer={this.setCorrectAnswer} />,
+      <GreaterNumberTask setCorrectAnswer={this.setCorrectAnswer} />,
+      <MissedNumberTask setCorrectAnswer={this.setCorrectAnswer} />,
+      <ScrambleTask setCorrectAnswer={this.setCorrectAnswer} setValue={this.setValue} />,
+      <SequenceTask setCorrectAnswer={this.setCorrectAnswer} setValue={this.setValue} />,
+    ];
+    this.DnDTASKS = 7;
+  }
 
-  return (
-    <Modal
-      isOpen={!!props.isOpen}
-      contentLabel="Task"
-      className="task-modal" 
-    >
-      {getRandomArrayItem(tasks)}
-    </Modal>
-  );
-}
+  state = {};
+
+  componentDidMount() {
+    this.init();
+  }
+
+  init = () => {
+    this.setState(() => ({value: '', currentTask: getRandomIndex(this.tasks.length)}));
+  }
+
+  handleKeyboardClick = (event) => {
+    if(event.key === 'Enter') {
+      this.handleClick();
+    }
+  }
+
+  handleClick = () => {
+    const isSuccessful = this.state.correctAnswer.includes(this.state.value.trim().toLowerCase());
+    this.init();
+    this.props.setTaskResult(isSuccessful);
+  }
+
+  setCorrectAnswer = (correctAnswer) => {
+    this.setState(() => ({ correctAnswer }));
+  }
+
+  setValue = (value) => {
+    this.setState(() => ({ value }));
+  }
+
+  handleChange = (event) => {
+    event.persist();
+    this.setState(() => ({ value: event.target.value }));
+  }
+
+  render() {
+    return (
+      <Modal
+        isOpen={!!this.props.isOpen}
+        contentLabel="Task"
+        className="task-modal" 
+      >
+        
+        <div className="custom-modal">
+          {this.tasks[this.state.currentTask]}
+          {this.state.currentTask < this.DnDTASKS && <input 
+            className="custom-modal__input" 
+            type="text" 
+            value={this.state.value} 
+            onChange={this.handleChange}
+            onKeyPress={this.handleKeyboardClick} 
+            autoFocus/>}
+          <button onClick={this.handleClick} className="button button--success">Проверить</button>
+        </div>
+      </Modal>
+    );
+  }
+} 
 
 export default TaskModal;

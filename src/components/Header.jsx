@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+import { mapCurrentUserToProps } from '../store/configureStore';
 import { logOut } from '../store/actions/user';
 import { fbLogOut } from '../store/firebase/auth';
-import { mapCurrentUserToProps } from '../store/configureStore';
 
 const Header = (props) => {
   const { id, name } = props.currentUser;
@@ -12,7 +12,7 @@ const Header = (props) => {
     await fbLogOut();
     props.dispatch((logOut()));
   }
-
+  
   return (
     <header className="header">
       <Link to="/" className="header__link">

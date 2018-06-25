@@ -4,33 +4,27 @@ import HeroSpells from './layers/HeroSpells';
 import EnemySpells from './layers/EnemySpells';
 import ImageLoader from '../animations/ImageLoader';
 import { getRandomProperty } from '../../utils/randomFunctions';
+import { gameFieldConfig as config} from '../configs/config';
 
 export default class GameField {
-  constructor(currentHero, heroInfo, enemyInfo) {
-    this.element = document.querySelector('#game-field');
-    this.ctx = this.element.getContext('2d');
+  constructor(currentHero) {
+    this.ctx = document.querySelector('#game-field').getContext('2d');
     this.currentHero = currentHero;
     this.ctx.shadowColor = 'black';
     this.ctx.strokeStyle = "#FF0";
-    this.ctx.shadowOffsetX = 0; 
-    this.ctx.shadowOffsetY = 0; 
     this.ctx.shadowBlur = 10; 
   }
 
   init = async () => {
     return new Promise (async resolve => {
-      const imageLoader = new ImageLoader(this);
-      const [ backgroundImages, heroImages, enemyImages, spellImages ] = await imageLoader.load();
-      this.backgroundImages = backgroundImages;
-      this.heroImages = heroImages;
-      this.enemyImages = enemyImages;
-      this.spellImages = spellImages;
+      const imageLoader = new ImageLoader(this.currentHero);
+      [ this.backgroundImages, this.heroImages, this.enemyImages, this.spellImages ] = await imageLoader.load();
       this.currentBackground = this.currentBackground || getRandomProperty(this.backgroundImages);
       this.currentEnemy = this.currentEnemy || getRandomProperty(this.enemyImages);
       this.hero = new Hero(this.heroImages[this.currentHero]);
       this.enemy = new Enemy(this.enemyImages[this.currentEnemy]);
-      this.hero.spells = new HeroSpells(this.spellImages['hero-spells'], 300, this.hero.dstSize);
-      this.enemy.spells = new EnemySpells(this.spellImages['enemy-spells'], 100, 150);
+      this.hero.spells = new HeroSpells(this.spellImages['hero-spells']);
+      this.enemy.spells = new EnemySpells(this.spellImages['enemy-spells']);
       this.drawScene();
       resolve();
     });
@@ -45,25 +39,26 @@ export default class GameField {
   }
 
   animate(animations) {
-    const numberOfFrames = animations.reduce((acc, curr) => acc < curr.numberOfFrames ? curr.numberOfFrames : acc, 0);
     return new Promise(resolve => {
       let i = 0;
       const interval = setInterval(() => {
         this.clear();
-        animations.forEach(animation => animation(i));
+        animations.forEach(animation => {
+          animation(i);
+        });
         this.drawScene();
         this.drawLegend();
-        if (i === numberOfFrames) {
+        if (i === config.numberOfFrames) {
             clearInterval(interval);
             resolve();
         }
         i++;
-      }, 100);
+      }, config.frameDuration);
     });
   }
 
   clear() {
-    this.ctx.clearRect(0, 0, 800, 650);
+    this.ctx.clearRect(config.startX, config.startY, config.width, config.height);
   }
 
   drawScene = () => {
@@ -132,7 +127,7 @@ export default class GameField {
   }
 
   drawBackground() {
-    this.ctx.drawImage(this.backgroundImages[this.currentBackground], 0, 0, this.element.width, this.element.height);
+    this.ctx.drawImage(this.backgroundImages[this.currentBackground], config.startX, config.startY, config.width, config.height);
   }
 
   drawMessage = (message) => {
@@ -143,37 +138,41 @@ export default class GameField {
       this.ctx.font = 'bold 70px sans-serif';
       this.ctx.fillStyle = "#F00";
       this.ctx.strokeStyle = "#FF0";
-      this.ctx.fillText(message, 400, 250);
-      this.ctx.strokeText(message, 400, 250);
+      this.ctx.fillText(message, config.message.offset.x, config.message.offset.y);
+      this.ctx.strokeText(message, config.message.offset.x, config.message.offset.y);
       setTimeout(() => {
         this.drawScene();
         this.drawLegend();
         resolve();
-      }, 2000);
+      }, config.message.duration);
     });
   }
 
-  heroAttack = (type, isHit) => {
+  heroAttack = (type, isSuccessful) => {
     return new Promise(async resolve => {
       await this.animate([
         this.hero.attack,
         this.hero.spells[type]
       ]);
-      isHit && await this.animate([this.enemy.hurt]);
+      if(isSuccessful) {
+        await this.animate([this.enemy.hurt]);
+      }
       resolve();
     });
   }
 
-  enemyAttack = (isHit) => {
+  enemyAttack = (isSuccessful) => {
     return new Promise(async resolve => {
       await this.animate([this.enemy.attack, this.enemy.spells.attack]);
-      isHit && await this.animate([this.hero.hurt]);
+      if(isSuccessful) {
+        await this.animate([this.hero.hurt]);
+      }
       resolve();
     });
   }
 
   heroWin = async () => {
-    await this.animate([this.enemy.death]);
+    await this.animate([this.hero.spells.lvlup, this.enemy.death]);
     await this.animate([this.hero.jump]);
     await this.animate([this.hero.walk]);
     this.resetField();
@@ -189,8 +188,8 @@ export default class GameField {
     this.currentBackground = getRandomProperty(this.backgroundImages);
     this.currentEnemy = getRandomProperty(this.enemyImages);
     this.enemy.image = this.enemyImages[this.currentEnemy];
-    this.enemy.currentSprite = this.enemy.idleSprite;
-    this.hero.currentSprite = this.hero.idleSprite;
+    this.enemy.currentSprite = this.enemy.config.idleSprite;
+    this.hero.currentSprite = this.hero.config.idleSprite;
   }
   
 }

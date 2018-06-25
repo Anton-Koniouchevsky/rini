@@ -3,23 +3,46 @@ export default class Layer {
     this.image = image;
   }
 
-  setSprite(srcX, srcY, dstX, dstY) {
-    this.currentSprite = {
-      srcX,
-      srcY,
-      dstX,
-      dstY
+  draw(ctx) {
+    const { srcX, srcY, dstX, dstY } = this.currentSprite;
+    ctx.drawImage(this.image, srcX, srcY, this.config.srcSize, this.config.srcSize, dstX, dstY, this.config.dstSize, this.config.dstSize);
+  }
+
+  setSprite = (
+    i, 
+    mode,
+    defaultSprite = this.config.idleSprite 
+  ) => {
+    if (i < this.config.numberOfFrames) {
+      this.currentSprite = {
+        srcX: this.config.srcSize * i, 
+        srcY: this.config.srcSize * this.config.spriteRows[mode], 
+        dstX: this.currentSprite.dstX + this.config.incX[mode](i), 
+        dstY: this.currentSprite.dstY + this.config.incY[mode](i),
+      };
+    } else {
+      this.currentSprite = defaultSprite;
     }
   }
 
-  draw(ctx) {
-    const { srcX, srcY, dstX, dstY } = this.currentSprite;
-    ctx.drawImage(this.image, srcX, srcY, this.srcSize, this.srcSize, dstX, dstY, this.dstSize, this.dstSize);
+  attack = (i) => {
+    this.setSprite(i, 'attack');
   }
 
-  setNumberOfFrames() {
-    Object.keys(this)
-      .filter(key => typeof(this[key]) === 'function')
-      .forEach(func => this[func].numberOfFrames = this.numberOfSprites);
+  hurt = (i) => {
+    this.setSprite(i, 'hurt');
   }
+
+  jump = (i) => {
+    this.setSprite(i, 'jump');
+  }
+
+  death = (i) => {
+    this.setSprite(i, 'death', this.config.deadSprite);
+  }
+
+  walk = (i) => {
+    this.setSprite(i, 'walk');
+  }
+
 }

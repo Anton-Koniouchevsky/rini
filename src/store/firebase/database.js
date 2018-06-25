@@ -38,7 +38,7 @@ const getActiveSession = (id) => {
     .then(snapshot => snapshot.val());
 }
 
-const setActiveSession = async(id, level, heroHP, enemyHP, enemyName) => {
+const setActiveSession = async(id, level = 0, heroHP = 100, enemyHP = 100, enemyName = '') => {
   await firebase.database().ref(`/arena-sessions/${id}`).set({
     level,
     heroHP,

@@ -1,24 +1,14 @@
-import Spells from './Spells';
+import Layer from './Layer';
+import { enemySpellsConfig } from '../../configs/config';
 
-export default class EnemySpells extends Spells {
-  constructor(image, srcSize, dstSize) {
-    super(image, srcSize, dstSize);
-    this.idleSprite = {
-      srcX: 0,
-      srcY: 0,
-      dstX: 520,
-      dstY: 330
-    };
-    this.currentSprite = this.idleSprite;
-    this.attack = this.attack.bind(this);
-    this.setNumberOfFrames();
+export default class EnemySpells extends Layer {
+  constructor(image) {
+    super(image);
+    this.config = enemySpellsConfig;
+    this.currentSprite = this.config.idleSprite;
   }
 
-  attack(i) {
-    if (i < this.numberOfSprites) {
-      this.setSprite(this.srcSize * i, 0, this.currentSprite.dstX - 45, this.currentSprite.dstY);
-    } else {
-      this.currentSprite = this.idleSprite;
-    }
+  attack = (i) => {
+    this.setSprite(i, 'attack');
   }
 }

@@ -7,9 +7,9 @@ const logOut = () => ({
     type: 'LOG_OUT'
 });
 
-const edit = (user) => ({
+const edit = (payload) => ({
     type: 'EDIT',
-    user
+    payload
 });
 
 export { logIn, logOut, edit };

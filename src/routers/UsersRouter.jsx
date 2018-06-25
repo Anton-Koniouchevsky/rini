@@ -1,9 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import NotFoundPage from '../containers/NotFoundPage';
 import UserPage from '../containers/UserPage';
 import UsersPage from '../containers/UsersPage';
-
+import NotFoundPage from '../containers/NotFoundPage';
 
 const UsersRouter = ({ match }) => {
     return (

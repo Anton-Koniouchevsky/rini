@@ -17,7 +17,6 @@ const LogInPage = (props) => {
     props.dispatch(logIn({
       id,
       name,
-      email,
       hero,
       sound,
       effects

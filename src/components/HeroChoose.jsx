@@ -1,5 +1,6 @@
 import React from 'react';
-import { heroes } from '../game/config';
+import { heroes } from '../game/configs/config';
+
 import '../assets/images/preview-images.png';
 
 const style = {

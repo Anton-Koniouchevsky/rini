@@ -35,7 +35,7 @@ const fbLogIn = async(email, password) => {
     });
 };
 
-const fbLogOut = async(email, password) => {
+const fbLogOut = async() => {
   await firebase
     .auth()
     .signOut();

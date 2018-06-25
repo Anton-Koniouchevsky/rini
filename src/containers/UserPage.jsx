@@ -15,12 +15,11 @@ class UserPage extends React.Component {
 
   componentDidMount() {
     Promise.all([getUser(this.props.match.params.userId), getUserResults(this.props.match.params.userId)])
-      .then( ([{ id, name, email, hero, sound, effects }, userResults]) => {
+      .then( ([{ id, name, hero, sound, effects }, userResults]) => {
         this.setState({ 
           promiseIsResolved: true,
           id,
           name, 
-          email,
           hero, 
           sound, 
           effects,
@@ -49,19 +48,15 @@ class UserPage extends React.Component {
   }
 
   handleEdit = () => {
-    const {id, name, email, hero, sound, effects} = { 
-      id: this.state.id, 
-      name: this.state.name, 
-      email: this.state.email, 
+    const { hero, sound, effects } = { 
       hero: this.state.hero,
       sound: this.state.sound, 
       effects: this.state.effects,
     };
-    setUser({ id, name, email, hero, sound, effects });
+    const editedUser = Object.assign({}, this.props.currentUser, { hero, sound, effects });
+    
+    setUser(editedUser);
     this.props.dispatch(edit({
-      id,
-      name,
-      email,
       hero,
       sound,
       effects,

@@ -2,6 +2,7 @@ import GameField from "./animations/GameField";
 import { getName } from "../utils/nameGenerator";
 import { setActiveSession, setResult } from '../store/firebase/database';
 import { generateDeviation, generateBoolean } from '../utils/randomFunctions';
+import { gameControllerConfig as config} from './configs/config';
 
 export default class GameController {
   constructor(currentUser, activeSession, openSpellModal, openEndGameModal, isEffectsMuted, isGameLoaded) {
@@ -27,15 +28,17 @@ export default class GameController {
       { enemyName: this.enemyName, enemyHP: this.enemyHP },
     );
     this.isGameLoaded();
-    this.delay(this.greetings);
-  }
-
-  delay = (callback) => {
-    setTimeout(callback, 1000);
+    this.greetings();
   }
 
   toggleEffects = (isEffectsMuted) => {
     this.isEffectsMuted = isEffectsMuted;
+  }
+
+  playEffect = (effect) => {
+    if(!this.isEffectsMuted) {
+      document.querySelector(`#${effect}`).play();
+    }
   }
 
   greetings = async () => {
@@ -50,26 +53,26 @@ export default class GameController {
   }
 
   heroAttack = async (spellType, isRight) => {
-    !this.isEffectsMuted && document.querySelector('#hero-spell-use-audio').play();
+    this.playEffect('hero-spell-use-audio');
     if(spellType === 'hill') {
       await this.gameField.heroAttack(spellType, false);
       if(isRight) {
-        const heroHill = generateDeviation(60, 20);
+        const heroHill = generateDeviation(config.hero.baseHill, config.hero.deviation);
         this.heroHP = this.heroHP + heroHill > 100 ? 100 : this.heroHP + heroHill;
         await this.gameField.changeHeroHP(this.heroHP);
       } else {
-        !this.isEffectsMuted && document.querySelector('#attack-miss-audio').play();
+        this.playEffect('attack-miss-audio');
         await this.gameField.drawMessage('Не удалось!');
       }
     } else {
       await this.gameField.heroAttack(spellType, isRight);
       if(isRight) {
-        !this.isEffectsMuted && document.querySelector('#hero-attack-success-audio').play();
-        const heroDamage = generateDeviation(30, 20);
+        this.playEffect('hero-attack-success-audio');
+        const heroDamage = generateDeviation(config.hero.baseDamage, config.hero.deviation);
         this.enemyHP = this.enemyHP - heroDamage > 0 ? this.enemyHP - heroDamage : 0;
         await this.gameField.changeEnemyHP(this.enemyHP);
       } else {
-        !this.isEffectsMuted && document.querySelector('#attack-miss-audio').play();
+        this.playEffect('attack-miss-audio');
         await this.gameField.drawMessage('Промах!');
       }
     }
@@ -82,16 +85,16 @@ export default class GameController {
 
   enemyAttack = async () => {
     await this.gameField.drawMessage('Ход врага');
-    const enemyAttack = generateBoolean();
-    !this.isEffectsMuted && document.querySelector('#enemy-spell-use-audio').play();
-    await this.gameField.enemyAttack(enemyAttack);
-    if(enemyAttack) {
-      !this.isEffectsMuted && document.querySelector('#enemy-attack-success-audio').play();
-      const enemyDamage = generateDeviation(25, 16) + this.level;
+    const isSuccessful = generateBoolean();
+    this.playEffect('enemy-spell-use-audio');
+    await this.gameField.enemyAttack(isSuccessful);
+    if(isSuccessful) {
+      this.playEffect('enemy-attack-success-audio');
+      const enemyDamage = generateDeviation(config.enemy.baseDamage, config.enemy.deviation) + this.level;
       this.heroHP = this.heroHP - enemyDamage > 0 ? this.heroHP - enemyDamage : 0;
       await this.gameField.changeHeroHP(this.heroHP);
     } else {
-      !this.isEffectsMuted && document.querySelector('#attack-miss-audio').play();
+      this.playEffect('attack-miss-audio');
       await this.gameField.drawMessage('Промах!');
     }
     if(this.heroHP === 0) {
@@ -102,10 +105,10 @@ export default class GameController {
   }
 
   heroWin = async () => {
-    !this.isEffectsMuted && document.querySelector('#hero-win-audio').play();
+    this.playEffect('hero-win-audio');
     await this.gameField.heroWin();
     this.level++;
-    this.enemyHP = 100;
+    this.enemyHP = config.maxHP;
     this.enemyName = getName();
     this.gameField.setUnitsInfo( 
       { heroName: this.heroName, heroHP: this.heroHP }, 
@@ -116,9 +119,9 @@ export default class GameController {
 
   enemyWin = async () => {
     setResult(this.id, this.heroName, this.level);
-    setActiveSession(this.id, 0, 100, 100, '');
+    setActiveSession(this.id);
     await this.gameField.enemyWin();
-    !this.isEffectsMuted && document.querySelector('#hero-death-audio').play();
+    this.playEffect('hero-death-audio');
     this.openEndGameModal();
   }
 

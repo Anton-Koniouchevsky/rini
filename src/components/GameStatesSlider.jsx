@@ -1,44 +1,21 @@
 import React from 'react';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 
-const images = require.context('../assets/images/help', true);
+const images = require.context('../assets/images/help/states', true);
 const imagePath = (name) => images(name, true);
 
-class GameStatesSlider extends React.Component {
-  render() {
-    var settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      className: 'sample',
-    };
-    return (
-      <Slider {...settings}>
-        <div>
-          <img className="image-slider" src={imagePath(`./spells.png`)} alt="spells" />
+const GameStatesSlider = (props) => {
+  return (
+    <Slider {...props.settings}>
+      {Array.from({length: 6}).map((_, index) => (
+        <div key={index + 1}>
+          <img className="image-slider" src={imagePath(`./state${index + 1}.png`)} alt={`state ${index + 1}`} />
         </div>
-        <div>
-          <img className="image-slider" src={imagePath(`./attack.png`)} alt="attack" />
-        </div>
-        <div>
-          <img className="image-slider" src={imagePath(`./win.png`)} alt="win" />
-        </div>
-        <div>
-          <img className="image-slider" src={imagePath(`./loose.png`)} alt="loose" />
-        </div>
-        <div>
-          <img className="image-slider" src={imagePath(`./loose2.png`)} alt="loose" />
-        </div>
-        <div>
-          <img className="image-slider" src={imagePath(`./highscore.png`)} alt="highscore" />
-        </div>
-      </Slider>
-    );
-  }
+      ))
+      }
+    </Slider>
+  );
+
 }
 
 export default GameStatesSlider;

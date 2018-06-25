@@ -58,16 +58,20 @@ class UserForm extends React.Component {
         effects,
       }),
     );
-    !this.state.error && this.props.history.push('/');
+    if(!this.state.error) {
+      this.props.history.push('/');
+    }
   }
 
   render() {
     return (
       <div>
-        <p className={this.state.error ? 
-          'user-form__error-block user-form__error' : 
-          'user-form__error-block'}>{this.state.error ? `${this.state.error}` : ''}</p>
         <form onSubmit={this.handleSubmitForm} className="user-form">
+          <p className={this.state.error ? 
+            'user-form__error-block user-form__error' : 
+            'user-form__error-block'}>
+            {this.state.error ? `${this.state.error}` : ''}
+          </p>
           {this.props.showName && <NameInput value={this.state.name} onChange={this.handleNameChange} />}
           <EmailInput value={this.state.email} onChange={this.handleEmailChange} />
           <PasswordInput value={this.state.password} onChange={this.handlePasswordChange} />

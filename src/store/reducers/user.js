@@ -1,7 +1,6 @@
 const defaultCurrentUserState = {
   id: null,
   name: '',
-  email: '',
   xp: 0,
   hero: 'cat',
   sounds: true,
@@ -17,7 +16,7 @@ export default (state = defaultCurrentUserState, action) => {
       return defaultCurrentUserState;
     }
     case 'EDIT': {
-      return action.user;
+      return Object.assign({}, state, action.payload);
     }
     default:
       return state;

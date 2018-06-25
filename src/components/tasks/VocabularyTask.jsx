@@ -1,37 +1,20 @@
 import React from 'react';
 import { getRandomProperty } from '../../utils/randomFunctions';
+import * as vocabulary from '../../assets/tasks/vocabulary.json';
 
-class VocabularyTask extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state.currentWord = getRandomProperty(props.vocabulary.default);
-  }
+const VocabularyTask = (props) => {
+  const currentWord = getRandomProperty(vocabulary.default);
+  props.setCorrectAnswer(vocabulary.default[currentWord]);
 
-  state = {
-    value: '',
-  };
-
-  handleClick = () => {
-    this.props.setTaskResult(
-      this.props.vocabulary[this.state.currentWord]
-      .includes(this.state.value.trim().toLowerCase()));
-  }
-
-  handleChange = (event) => {
-    event.persist();
-    this.setState(() => ({ value: event.target.value }));
-  }
-
-  render = () => (
+  return (
     <div className="custom-modal">
       <h3 className="custom-modal__header">Переведи слово:</h3>
       <div className="custom-modal__content">
-        <div>{this.state.currentWord}</div>
-        <input className="custom-modal__input" type="text" value={this.state.value} onChange={this.handleChange} />
+        <div>{currentWord}</div>
       </div>
-      <button onClick={this.handleClick} className="button button--success">Проверить</button>
     </div>
   );
+
 } 
 
 export default VocabularyTask;
